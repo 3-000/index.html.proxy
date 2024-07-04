@@ -4,13 +4,14 @@ import logging
 
 app = Flask(__name__)
 
-# Enable CORS for all routes under /api
+# Enable CORS for specific origins
 CORS(app, resources={r"/api/*": {"origins": ["http://trusteddomain1.com", "http://trusteddomain2.com"]}})
+
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 
 # Allowed bank accounts
-ALLOWED_ACCOUNTS = ['197278463', '20057942287']
+ALLOWED_ACCOUNTS = ['1976278463', '20057942287']
 
 @app.route('/')
 def index():

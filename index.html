@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send Sec to Server</title>
+    <title>Saliver JARVIS HUD</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,35 +11,40 @@
             padding: 0;
             height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
+            background: radial-gradient(circle at center, #000428, #004e92);
+            color: #00e5ff;
             overflow: hidden;
-            font-style: italic;
-            background: linear-gradient(270deg, #ff0000, #00ff00, #0000ff);
-            background-size: 600% 600%;
-            animation: GradientShift 20s ease infinite;
         }
 
-        @keyframes GradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .hud {
+            width: 100%;
+            height: 100%;
+            position: relative;
         }
 
-        .container {
+        .central-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             text-align: center;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(0, 0, 0, 0.5);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            z-index: 1;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.8);
+            border: 1px solid #00e5ff;
+            width: 60%;
         }
 
         .clock {
             font-size: 48px;
-            color: #333;
             margin-bottom: 20px;
+            border: 2px solid #00e5ff;
+            padding: 10px;
+            border-radius: 10px;
+            animation: pulse 1.5s infinite;
         }
 
         .input-group {
@@ -52,181 +57,52 @@
 
         .input-group input {
             padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
+            border: 1px solid #00e5ff;
             border-radius: 5px;
-            width: 100%;
-            max-width: 300px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #008CBA;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-
-        button:hover {
-            background-color: #005f73;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #00e5ff;
         }
 
         .status-dot {
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            position: absolute;
-            top: 10px;
-            left: 10px;
+            display: inline-block;
+            margin-left: 10px;
         }
 
-        .status-dot.success {
+        .success {
+            background-color: green;
+        }
+
+        .failure {
             background-color: red;
         }
 
-        .status-dot.failure {
-            background-color: blue;
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px #00e5ff; }
+            50% { box-shadow: 0 0 20px #00e5ff; }
+            100% { box-shadow: 0 0 5px #00e5ff; }
         }
-
-        .scene {
-            position: relative;
-            width: 100%;
-            height: 400px;
-            background-color: #87CEEB;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .road {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 100px;
-            background-color: #555;
-        }
-
-        .car {
-            position: absolute;
-            bottom: 20px;
-            width: 100px;
-            height: 50px;
-            background-color: #000;
-            border-radius: 10px;
-            animation: moveCar 10s linear infinite;
-        }
-
-        .wheel {
-            position: absolute;
-            bottom: 5px;
-            width: 20px;
-            height: 20px;
-            background-color: #333;
-            border-radius: 50%;
-        }
-
-        .wheel1 { left: 10px; }
-        .wheel2 { right: 10px; }
-
-        @keyframes moveCar {
-            0% { left: -100px; }
-            100% { left: 100%; }
-        }
-
-        .tree, .building, .person {
-            position: absolute;
-            bottom: 100px;
-        }
-
-        .tree {
-            width: 30px;
-            height: 80px;
-            background-color: #8B4513;
-            border-radius: 5px;
-        }
-
-        .tree::before {
-            content: '';
-            position: absolute;
-            bottom: 60px;
-            left: -20px;
-            width: 70px;
-            height: 40px;
-            background-color: #228B22;
-            border-radius: 50%;
-        }
-
-        .building {
-            width: 60px;
-            height: 150px;
-            background-color: #d3d3d3;
-        }
-
-        .building::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 10px;
-            width: 40px;
-            height: 40px;
-            background-color: #a9a9a9;
-        }
-
-        .person {
-            width: 10px;
-            height: 30px;
-            background-color: #ffcccb;
-            border-radius: 5px;
-        }
-
-        .tree1 { left: 10%; }
-        .tree2 { left: 30%; }
-        .tree3 { left: 50%; }
-        .tree4 { left: 70%; }
-        .tree5 { left: 90%; }
-
-        .building1 { left: 15%; }
-        .building2 { left: 45%; }
-        .building3 { left: 75%; }
-
-        .person1 { left: 25%; }
-        .person2 { left: 55%; }
-        .person3 { left: 85%; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="clock" id="clock">0</div>
-        <div class="input-group">
-            <label for="bankAccount">Bank Account:</label>
-            <input type="text" id="bankAccount" placeholder="Enter bank account number">
+    <div class="hud">
+        <div class="central-display">
+            <div class="clock" id="clock">0</div>
+            <div class="input-group">
+                <label for="bankAccount">Bank Account:</label>
+                <input type="text" id="bankAccount" placeholder="Enter bank account number">
+            </div>
+            <div id="status"></div>
+            <div id="voiceCommandResult"></div>
+            <div id="quantumResult"></div>
+            <div id="gpsResult"></div>
         </div>
-        <button onclick="sendToAccount()">Send Sec to Account</button>
-        <div id="statusDot" class="status-dot"></div>
-    </div>
-    <div class="scene">
-        <div class="road"></div>
-        <div class="car">
-            <div class="wheel wheel1"></div>
-            <div class="wheel wheel2"></div>
-        </div>
-        <div class="tree tree1"></div>
-        <div class="tree tree2"></div>
-        <div class="tree tree3"></div>
-        <div class="tree tree4"></div>
-        <div class="tree tree5"></div>
-        <div class="building building1"></div>
-        <div class="building building2"></div>
-        <div class="building building3"></div>
-        <div class="person person1"></div>
-        <div class="person person2"></div>
-        <div class="person person3"></div>
     </div>
     <script>
-        let customSec = 1;
-        const maxSec = 100000;
+        let customSec = 100;
+        const maxSec = 1000;
         const conversionFactor = 100000000000000000000;
         const allowedAccounts = ['197278463', '20057942287'];
 
@@ -238,6 +114,8 @@
             }
         }
 
+        setInterval(updateClock, 1000);
+
         function sendToAccount() {
             const bankAccount = document.getElementById('bankAccount').value;
             const sec = document.getElementById('clock').textContent;
@@ -248,7 +126,7 @@
                 return;
             }
 
-            fetch('/api/send_sec', {
+            fetch('/send_sec', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -260,25 +138,59 @@
             })
             .then(response => response.json())
             .then(data => {
-                const statusDot = document.getElementById('statusDot');
-                if (data.success) {
-                    statusDot.classList.remove('failure');
-                    statusDot.classList.add('success');
-                } else {
-                    statusDot.classList.remove('success');
-                    statusDot.classList.add('failure');
-                }
+                document.getElementById('status').innerHTML = '<div class="status-dot success"></div>';
+                console.log('Success:', data);
             })
             .catch((error) => {
+                document.getElementById('status').innerHTML = '<div class="status-dot failure"></div>';
                 console.error('Error:', error);
-                const statusDot = document.getElementById('statusDot');
-                statusDot.classList.remove('success');
-                statusDot.classList.add('failure');
             });
         }
 
-        setInterval(updateClock, 1000);
-        updateClock();
+        function initiateVoiceCommand() {
+            fetch('/voice_command', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('voiceCommandResult').textContent = data.result;
+                    processVoiceCommand(data.result);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function performQuantumComputation() {
+            fetch('/quantum_computation', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('quantumResult').textContent = JSON.stringify(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function getGpsLocation() {
+            fetch('/gps_location', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('gpsResult').textContent = `Latitude: ${data.latitude}, Longitude: ${data.longitude}`;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function processVoiceCommand(command) {
+            if (command.includes("send sec")) {
+                sendToAccount();
+            } else if (command.includes("quantum computation")) {
+                performQuantumComputation();
+            } else if (command.includes("GPS location")) {
+                getGpsLocation();
+            } else {
+                console.log("Command not recognized");
+            }
+        }
+
+        // Automatically initiate voice command on page load
+        window.onload = function() {
+            initiateVoiceCommand();
+        }
     </script>
 </body>
 </html>
