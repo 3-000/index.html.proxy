@@ -5,7 +5,7 @@ import logging
 app = Flask(__name__)
 
 # Enable CORS for all routes under /api
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app, resources={r"/api/*": {"origins": ["http://trusteddomain1.com", "http://trusteddomain2.com"]}})
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
